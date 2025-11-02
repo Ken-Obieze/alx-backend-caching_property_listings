@@ -12,3 +12,18 @@ def cache_metrics_view(request):
 def property_list(request):
     properties = get_all_properties()
     return render(request, 'properties/property_list.html', {'properties': properties})
+
+def property_list_json(request):
+    properties = get_all_properties()
+    data = [
+        {
+            "id": prop.id,
+            "title": prop.title,
+            "description": prop.description,
+            "price": float(prop.price),
+            "location": prop.location,
+            "created_at": prop.created_at.isoformat(),
+        }
+        for prop in properties
+    ]
+    return JsonResponse({"data": data})
